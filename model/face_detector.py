@@ -6,7 +6,7 @@ import scipy.misc
 face_detector = dlib.get_frontal_face_detector()
 shape_predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
 workDirectory = os.path.dirname(__file__)
-trainDirectory = os.path.join(workDirectory,'images')
+trainDirectory = os.path.join(workDirectory,'train')
 personFolder = [os.path.join(trainDirectory, f) for f in os.listdir(trainDirectory)]
 
 count = 0
