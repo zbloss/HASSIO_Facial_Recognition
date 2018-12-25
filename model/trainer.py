@@ -26,12 +26,12 @@ y = pickle.load(open("y.pickle", "rb"))
 X = X/255.0
 now = datetime.now()
 
-dense_layers = [2, 4]
-layer_sizes = [12, 24]
-conv_layers = [3, 4]
-optimizers = ["adam", "SGD"]
-batch_size = [4, 12, 24]
-epochs = [10, 15, 20]
+dense_layers = [4]
+layer_sizes = [24]
+conv_layers = [4]
+optimizers = ["adam"]
+batch_size = [24]
+epochs = [20]
 
 # training a shit ton of models in order to try to optimize parameters.
 # this is a poor man's RandomSearchCV
@@ -42,7 +42,7 @@ for epoch in epochs:
                 for layer_size in layer_sizes:
                     for conv_layer in conv_layers:
 
-                        NAME = "{}-opt-{}-conv-{}-nodes-{}-dense-{}".format(optimizer, conv_layer, layer_size, dense_layer, now.strftime("%Y%m%d-%H%M%S"))
+                        NAME = "{}-opt-{}-conv-{}-nodes-{}-dense-{}-batch-{}-epochs-{}".format(optimizer, conv_layer, layer_size, dense_layer,batch, epoch, now.strftime("%Y%m%d-%H%M%S"))
                         tensorboard = TensorBoard(log_dir='logs/adam-SGD-batch-epochs/{}'.format(NAME))
                         print(NAME)
 
@@ -72,6 +72,7 @@ for epoch in epochs:
                                     metrics=['accuracy'])
 
                         model.fit(X, y, batch_size=batch, epochs=epoch, validation_split=0.3, callbacks=[tensorboard])
+                        model.save('model.h5')
                     # use batch_size so we aren't passing the entire dataset in at a time,
                     # validation_split is us using 10% of the dataset as an out of dataset test
                     # it is a more advanced way of training than train_test_split()
